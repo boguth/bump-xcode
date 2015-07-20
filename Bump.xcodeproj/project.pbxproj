@@ -16,7 +16,6 @@
 		09E8815D1B5B3C2D006B3381 /* BumpTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 09E8815C1B5B3C2D006B3381 /* BumpTests.m */; };
 		09E881681B5B438F006B3381 /* Cell.m in Sources */ = {isa = PBXBuildFile; fileRef = 09E881671B5B438F006B3381 /* Cell.m */; };
 		09E881711B5C24AF006B3381 /* MySupplementaryViewCollectionReusableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 09E881701B5C24AF006B3381 /* MySupplementaryViewCollectionReusableView.m */; };
-		09E881731B5C389D006B3381 /* background_image.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 09E881721B5C389D006B3381 /* background_image.jpg */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,7 +46,6 @@
 		09E881671B5B438F006B3381 /* Cell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Cell.m; sourceTree = "<group>"; };
 		09E8816F1B5C24AF006B3381 /* MySupplementaryViewCollectionReusableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MySupplementaryViewCollectionReusableView.h; sourceTree = "<group>"; };
 		09E881701B5C24AF006B3381 /* MySupplementaryViewCollectionReusableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MySupplementaryViewCollectionReusableView.m; sourceTree = "<group>"; };
-		09E881721B5C389D006B3381 /* background_image.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = background_image.jpg; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,7 +87,6 @@
 		09E8813F1B5B3C2D006B3381 /* Bump */ = {
 			isa = PBXGroup;
 			children = (
-				09E881721B5C389D006B3381 /* background_image.jpg */,
 				09E881441B5B3C2D006B3381 /* AppDelegate.h */,
 				09E881451B5B3C2D006B3381 /* AppDelegate.m */,
 				09E881471B5B3C2D006B3381 /* ViewController.h */,
@@ -218,7 +215,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				09E8814C1B5B3C2D006B3381 /* Main.storyboard in Resources */,
-				09E881731B5C389D006B3381 /* background_image.jpg in Resources */,
 				09E881511B5B3C2D006B3381 /* LaunchScreen.xib in Resources */,
 				09E8814E1B5B3C2D006B3381 /* Images.xcassets in Resources */,
 			);

@@ -31,6 +31,7 @@
 
 -(void)makeRequest:(NSString*)string
 {
+    
     NSString *location = string;
     NSString *prefix = @"https://whispering-stream-9304.herokuapp.com/update?token=b13e2dca0322957b7934a6b1f4d500f8dd7b59724db65f6f92f3a1072a31bbf4&lat=";
     NSString *queryString = [prefix stringByAppendingString:location];
@@ -56,16 +57,21 @@
     float latitude=coordinate.latitude;
     
     
+    
     /// MOVEMENT TOLERANCE
-//    if (prevLat == nil){
-//        prevLat = &latitude;
-//    }
-//    else if (prevLat == &latitude){
-//        [self.locationManager stopUpdatingLocation];
-//    }
-//    if (prevLat !=
-  
-//    NSLog(@"We're in the request maker.");
+    //    if (prevLat == nil){
+    //        prevLat = &latitude;
+    //    }
+    //    else if (prevLat == &latitude){
+    //        [self.locationManager stopUpdatingLocation];
+    //    }
+    //    if (prevLat !=
+    //    NSLog(@"We're in the request maker.");
+    
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    NSString *token = appDelegate.pushCode;
+    NSLog(@"%@", token);
+    
     [self makeRequest:[NSString stringWithFormat:@"%f&lon=%f",latitude,longitude]];
 }
 
