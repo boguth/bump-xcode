@@ -11,14 +11,6 @@
 #import <MobileCoreServices/MobileCoreServices.h>
 #import "MySupplementaryViewCollectionReusableView.h"
 
-// ORIGINAL CODE //
-//@interface ViewController : UIViewController <
-//CLLocationManagerDelegate> {
-//    CLLocationManager *locationManager;
-//    
-//}
-// ORIGINAL CODE //
-
 
 @interface ViewController : UICollectionViewController<
     CLLocationManagerDelegate> {
