@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>7BDAFFCD-3B38-4A17-9586-6DCFDF6574DE</string>
+	<key>IDESourceControlProjectName</key>
+	<string>Bump</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>F88F99541AAFA7F06AA0F17E111DD732E6F7124D</key>
+		<string>https://github.com/pmacaluso3/BumpBoysXCode</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>Bump.xcodeproj</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>F88F99541AAFA7F06AA0F17E111DD732E6F7124D</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/pmacaluso3/BumpBoysXCode</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>F88F99541AAFA7F06AA0F17E111DD732E6F7124D</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>F88F99541AAFA7F06AA0F17E111DD732E6F7124D</string>
+			<key>IDESourceControlWCCName</key>
+			<string>Bump</string>
+		</dict>
+	</array>
+</dict>
+</plist>
