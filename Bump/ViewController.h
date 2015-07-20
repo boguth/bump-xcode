@@ -22,11 +22,11 @@
 
 @interface ViewController : UICollectionViewController<
     CLLocationManagerDelegate> {
-    CLLocationManager *locationManager;
+    CLLocationManager *_locationManager;
 }
 
 @property(nonatomic, strong) NSArray * dataArray;
-
+//@property (strong, nonatomic) CLLocationManager *locationManager;
 
 @end
 
