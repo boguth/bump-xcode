@@ -74,7 +74,7 @@
     
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     NSString *token = appDelegate.pushCode;
-    NSLog(@"%@", token);
+//    NSLog(@"%@", token);
     
     [self makeRequest:[NSString stringWithFormat:@"%f&lon=%f&token=%@",latitude,longitude,token]];
 
@@ -98,7 +98,7 @@
                                    
                                    NSDictionary *imagesDict = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
                                    NSArray *urls = [imagesDict valueForKey:@"images"];
-                                   NSLog(@"%@", urls);
+//                                   NSLog(@"%@", urls);
                                    self.dataArray = urls;
                                    [self updateImageData];
                                }
@@ -195,7 +195,7 @@
 
 
 -(NSInteger) collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
-    NSLog(@"%u", self.dataArray.count);
+//    NSLog(@"%u", self.dataArray.count);
  
     return self.dataArray.count;
 }
@@ -287,9 +287,12 @@
 
 -(void)listPeopleInAddressBook:(ABAddressBookRef *) addressBook {
     
+    
     {
         NSArray *allPeople = CFBridgingRelease(ABAddressBookCopyArrayOfAllPeople(addressBook));
         NSInteger numberOfPeople = [allPeople count];
+        NSLog(@"AddressBook");
+        NSLog(@"%ld", (long)numberOfPeople);
         
         for (NSInteger i = 0; i < numberOfPeople; i++) {
             ABRecordRef person = (__bridge ABRecordRef)allPeople[i];
@@ -304,7 +307,7 @@
             mobileLabel = CFBridgingRelease(ABMultiValueCopyLabelAtIndex(phoneNumbers, i));
             if ([mobileLabel isEqualToString:@"_$!<Mobile>!$_"]) {
                 mobileNumber = ABMultiValueCopyValueAtIndex(phoneNumbers,i);
-                NSLog(@"Name:%@ %@, and Mobile: %@", firstName, lastName, mobileNumber);
+                NSLog(@"Name:%@ %@, and Mobile: %@, and image: %@", firstName, lastName, mobileNumber, img);
 
             }
             
