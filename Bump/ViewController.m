@@ -14,7 +14,6 @@
 #import <AddressBookUI/AddressBookUI.h>
 @import CoreLocation;
 @import AddressBook;
-//#import <CoreLocation/CoreLocation.h>
 
 @interface ViewController () <CLLocationManagerDelegate>
 
@@ -22,6 +21,7 @@
 @property (strong, nonatomic) NSOperationQueue *bgQueue;
 @property (strong, nonatomic) NSMutableArray *imageData;
 @property (assign, nonatomic) CFErrorRef *error;
+
 
 @end
 
@@ -41,6 +41,7 @@
     NSString *queryString = [prefix stringByAppendingString:location];
     [self loadURLsFromLocation:queryString];
 }
+
 
 
 //// LOCATION CODE /////
@@ -174,6 +175,7 @@
     if (self.error == NULL){
         ABAddressBookRef addressBook = ABAddressBookCreateWithOptions(NULL, self.error);
         [self listPeopleInAddressBook:addressBook];
+
     }
  
 }
@@ -195,7 +197,11 @@
 
 
 -(NSInteger) collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
-//    NSLog(@"%u", self.dataArray.count);
+
+
+
+    NSLog(@"%lu", (unsigned long)self.dataArray.count);
+
  
     return self.dataArray.count;
 }
@@ -236,8 +242,10 @@
 
 
 
+// Address Book Methods
 -(void)addressBookAuth
 {
+    NSLog(@"We're in auth");
     ABAuthorizationStatus status = ABAddressBookGetAuthorizationStatus();
     
     if (status == kABAuthorizationStatusDenied || status == kABAuthorizationStatusRestricted) {
@@ -250,7 +258,7 @@
         return;
     }
     
-    self.error = NULL;
+     self.error = NULL;
     ABAddressBookRef addressBook = ABAddressBookCreateWithOptions(NULL, self.error);
     
     if (!addressBook) {
@@ -259,13 +267,12 @@
     }
     
     ABAddressBookRequestAccessWithCompletion(addressBook, ^(bool granted, CFErrorRef error) {
-        if (error) {
+        if (self.error) {
             NSLog(@"ABAddressBookRequestAccessWithCompletion error: %@", CFBridgingRelease(error));
         }
         
         if (granted) {
             // if they gave you permission, then just carry on
-            
             [self listPeopleInAddressBook:addressBook];
         } else {
             // however, if they didn't give you permission, handle it gracefully, for example...
@@ -279,9 +286,7 @@
         
         CFRelease(addressBook);
     });
-    
 }
-
 
 
 
@@ -308,12 +313,18 @@
             if ([mobileLabel isEqualToString:@"_$!<Mobile>!$_"]) {
                 mobileNumber = ABMultiValueCopyValueAtIndex(phoneNumbers,i);
                 NSLog(@"Name:%@ %@, and Mobile: %@, and image: %@", firstName, lastName, mobileNumber, img);
-
             }
             
         }
     }
 }
+
+
+
+
+
+
+
 
 
 
