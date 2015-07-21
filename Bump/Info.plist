@@ -2,14 +2,12 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>&quot;Pretty Please&quot; - Dr. Bump</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
-	<string>bumpboys.com.$(PRODUCT_NAME:rfc1034identifier)</string>
+	<string>com.org.$(PRODUCT_NAME:rfc1034identifier)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
@@ -25,7 +23,9 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>&quot;Pretty Please&quot; - Dr. Bump</string>
+	<string>"Pretty Please" - Dr. Bump</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>"Pretty Please" - Dr. Bump</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>location</string>

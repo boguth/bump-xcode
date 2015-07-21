@@ -31,9 +31,8 @@
 
 -(void)makeRequest:(NSString*)string
 {
-    
     NSString *location = string;
-    NSString *prefix = @"https://whispering-stream-9304.herokuapp.com/update?token=b13e2dca0322957b7934a6b1f4d500f8dd7b59724db65f6f92f3a1072a31bbf4&lat=";
+    NSString *prefix = @"https://whispering-stream-9304.herokuapp.com/update?lat=";
     NSString *queryString = [prefix stringByAppendingString:location];
     [self loadURLsFromLocation:queryString];
 }
@@ -72,7 +71,7 @@
     NSString *token = appDelegate.pushCode;
     NSLog(@"%@", token);
     
-    [self makeRequest:[NSString stringWithFormat:@"%f&lon=%f",latitude,longitude]];
+    [self makeRequest:[NSString stringWithFormat:@"%f&lon=%f&token=%@",latitude,longitude,token]];
 }
 
 - (void)loadURLsFromLocation:(NSString *)locationString {
@@ -90,9 +89,10 @@
                                }
                                
                                if(data != nil){
-
+                                   
                                    NSDictionary *imagesDict = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
                                    NSArray *urls = [imagesDict valueForKey:@"images"];
+                                   NSLog(@"%@", urls);
                                    self.dataArray = urls;
                                    [self updateImageData];
                                }
@@ -103,7 +103,10 @@
 - (void)updateImageData{
     __block NSInteger count = self.dataArray.count;
     
+    
+    NSLog(@"%lu", self.dataArray.count);
     for (NSInteger i = 0; i< self.dataArray.count; i++) {
+        NSLog(@"Hey");
         if(!self.bgQueue){
             self.bgQueue = [[NSOperationQueue alloc] init];
         }
@@ -114,12 +117,14 @@
                                            queue:self.bgQueue
                                completionHandler: ^(NSURLResponse *response, NSData *data, NSError *connectionError) {
                                    if(data){
+//                                       NSLog(@"%@", data);
                                        self.imageData[i] = [UIImage imageWithData:data];
                                    }
                                    
                                    count -= 1;
                                    if(count <= 0){
                                        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                                           
                                            [self.collectionView reloadData];
                                        }];
                                    }
