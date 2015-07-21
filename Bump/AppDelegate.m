@@ -18,9 +18,19 @@
 //NSString *MYGlobalVariable = @"Test"; // More Global Var Testing
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    // Override point for customization after application launch.
+//    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"HasLaunchedOnce"])
+//    {
+//        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"HasLaunchedOnce"];
+//        [[NSUserDefaults standardUserDefaults] synchronize];
+//        return YES;
+//    }
+//    else{
+//        NSLog(@"_GOBBLEGOO_");
+//        ABAddressBookRef addressBook = ABAddressBookCreateWithOptions(NULL, &error);
+//        return YES;
+//    }
     return YES;
-}
+} // Checks if a person has used the app befor eor not
 
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
@@ -59,5 +69,9 @@
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error{
     NSLog(@"%@",error);
 }
+
+
+
+
 
 @end

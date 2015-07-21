@@ -9,7 +9,11 @@
 #import "ViewController.h"
 #import "Cell.h"
 #import "AppDelegate.h"
+#import "QuartzCore/QuartzCore.h"
+#import <AddressBook/AddressBook.h>
+#import <AddressBookUI/AddressBookUI.h>
 @import CoreLocation;
+@import AddressBook;
 //#import <CoreLocation/CoreLocation.h>
 
 @interface ViewController () <CLLocationManagerDelegate>
@@ -17,13 +21,14 @@
 @property (strong, nonatomic) CLLocationManager *locationManager;
 @property (strong, nonatomic) NSOperationQueue *bgQueue;
 @property (strong, nonatomic) NSMutableArray *imageData;
-
+@property (assign, nonatomic) CFErrorRef *error;
 
 @end
 
 @implementation ViewController{
     float *prevLat;
     float *prevLong;
+//    ABRecordRef *ref;
 }
 
 
@@ -72,6 +77,7 @@
     NSLog(@"%@", token);
     
     [self makeRequest:[NSString stringWithFormat:@"%f&lon=%f&token=%@",latitude,longitude,token]];
+
 }
 
 - (void)loadURLsFromLocation:(NSString *)locationString {
@@ -164,6 +170,11 @@
         [self.locationManager requestAlwaysAuthorization];
     }
     [self.locationManager startUpdatingLocation];
+    
+    if (self.error == NULL){
+        ABAddressBookRef addressBook = ABAddressBookCreateWithOptions(NULL, self.error);
+        [self listPeopleInAddressBook:addressBook];
+    }
  
 }
 
@@ -198,9 +209,8 @@
     [aCell.layer setBorderWidth:1.5f];
     [aCell.layer setBorderColor:[UIColor whiteColor].CGColor];
     [aCell.layer setCornerRadius:37.5f]; // MAKES CIRCLES!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        return aCell;
     
-    
-    return aCell;
 }
 
 
@@ -223,6 +233,84 @@
 }
 
 
+
+
+
+-(void)addressBookAuth
+{
+    ABAuthorizationStatus status = ABAddressBookGetAuthorizationStatus();
+    
+    if (status == kABAuthorizationStatusDenied || status == kABAuthorizationStatusRestricted) {
+        // if you got here, user had previously denied/revoked permission for your
+        // app to access the contacts, and all you can do is handle this gracefully,
+        // perhaps telling the user that they have to go to settings to grant access
+        // to contacts
+        
+        [[[UIAlertView alloc] initWithTitle:nil message:@"This app requires access to your contacts to function properly. Please visit to the \"Privacy\" section in the iPhone Settings app." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+        return;
+    }
+    
+    self.error = NULL;
+    ABAddressBookRef addressBook = ABAddressBookCreateWithOptions(NULL, self.error);
+    
+    if (!addressBook) {
+        NSLog(@"ABAddressBookCreateWithOptions error: %@", CFBridgingRelease(self.error));
+        return;
+    }
+    
+    ABAddressBookRequestAccessWithCompletion(addressBook, ^(bool granted, CFErrorRef error) {
+        if (error) {
+            NSLog(@"ABAddressBookRequestAccessWithCompletion error: %@", CFBridgingRelease(error));
+        }
+        
+        if (granted) {
+            // if they gave you permission, then just carry on
+            
+            [self listPeopleInAddressBook:addressBook];
+        } else {
+            // however, if they didn't give you permission, handle it gracefully, for example...
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                // BTW, this is not on the main thread, so dispatch UI updates back to the main queue
+                
+                [[[UIAlertView alloc] initWithTitle:nil message:@"This app requires access to your contacts to function properly. Please visit to the \"Privacy\" section in the iPhone Settings app." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+            });
+        }
+        
+        CFRelease(addressBook);
+    });
+    
+}
+
+
+
+
+-(void)listPeopleInAddressBook:(ABAddressBookRef *) addressBook {
+    
+    {
+        NSArray *allPeople = CFBridgingRelease(ABAddressBookCopyArrayOfAllPeople(addressBook));
+        NSInteger numberOfPeople = [allPeople count];
+        
+        for (NSInteger i = 0; i < numberOfPeople; i++) {
+            ABRecordRef person = (__bridge ABRecordRef)allPeople[i];
+            NSString *firstName = CFBridgingRelease(ABRecordCopyValue(person, kABPersonFirstNameProperty));
+            NSString *lastName  = CFBridgingRelease(ABRecordCopyValue(person, kABPersonLastNameProperty));
+            NSData  *imgData = (NSData *)CFBridgingRelease(ABPersonCopyImageData(person));
+            UIImage  *img = [UIImage imageWithData:imgData];
+            
+            ABMultiValueRef phoneNumbers = ABRecordCopyValue(person, kABPersonPhoneProperty);
+            CFStringRef mobileNumber;
+            NSString *mobileLabel;
+            mobileLabel = CFBridgingRelease(ABMultiValueCopyLabelAtIndex(phoneNumbers, i));
+            if ([mobileLabel isEqualToString:@"_$!<Mobile>!$_"]) {
+                mobileNumber = ABMultiValueCopyValueAtIndex(phoneNumbers,i);
+                NSLog(@"Name:%@ %@, and Mobile: %@", firstName, lastName, mobileNumber);
+
+            }
+            
+        }
+    }
+}
 
 
 
