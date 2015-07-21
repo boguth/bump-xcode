@@ -14,7 +14,6 @@
 #import <AddressBookUI/AddressBookUI.h>
 @import CoreLocation;
 @import AddressBook;
-//#import <CoreLocation/CoreLocation.h>
 
 @interface ViewController () <CLLocationManagerDelegate>
 
@@ -22,6 +21,7 @@
 @property (strong, nonatomic) NSOperationQueue *bgQueue;
 @property (strong, nonatomic) NSMutableArray *imageData;
 @property (assign, nonatomic) CFErrorRef *error;
+
 
 @end
 
@@ -44,93 +44,6 @@
 }
 
 
-//// LOCATION CODE /////
-
-- (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations
-{
-    [NSThread sleepForTimeInterval:0.5f];
-    self.locationManager = [[CLLocationManager alloc] init];
-    self.locationManager.delegate = self;
-    self.locationManager.desiredAccuracy = kCLLocationAccuracyBest;
-    self.locationManager.distanceFilter = kCLDistanceFilterNone;
-    [self.locationManager startUpdatingLocation];
-//    [self.locationManager stopUpdatingLocation];
-    
-    CLLocation *location = [self.locationManager location];
-    CLLocationCoordinate2D coordinate = [location coordinate];
-    float longitude=coordinate.longitude;
-    float latitude=coordinate.latitude;
-    
-    
-    
-    /// MOVEMENT TOLERANCE
-    //    if (prevLat == nil){
-    //        prevLat = &latitude;
-    //    }
-    //    else if (prevLat == &latitude){
-    //        [self.locationManager stopUpdatingLocation];
-    //    }
-    //    if (prevLat !=
-    //    NSLog(@"We're in the request maker.");
-    
-    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    NSString *token = appDelegate.pushCode;
-
-//    NSLog(@"%f", latitude);
-    [self makeRequest:[NSString stringWithFormat:@"%f&lon=%f",latitude,longitude]];
-}
-
-- (void)loadURLsFromLocation:(NSString *)locationString {
-    if(!self.bgQueue){
-        self.bgQueue = [[NSOperationQueue alloc] init]; // Background threads it (backgroundqueue).
-    }
-    
-    [NSURLConnection sendAsynchronousRequest:
-     [NSURLRequest requestWithURL:
-      [NSURL URLWithString:locationString]]
-                                       queue:self.bgQueue
-                           completionHandler: ^(NSURLResponse *response, NSData *data, NSError *connectionError) {
-                               if(connectionError){
-                                   NSLog(@"%@", connectionError);
-                               }
-                               
-                               if(data != nil){
-
-                                   NSDictionary *imagesDict = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-                                   NSArray *urls = [imagesDict valueForKey:@"images"];
-                                   self.dataArray = urls;
-                                   [self updateImageData];
-                               }
-                               
-                           }];
-}
-
-- (void)updateImageData{
-    __block NSInteger count = self.dataArray.count;
-    
-    for (NSInteger i = 0; i< self.dataArray.count; i++) {
-        if(!self.bgQueue){
-            self.bgQueue = [[NSOperationQueue alloc] init];
-        }
-        
-        [NSURLConnection sendAsynchronousRequest:
-         [NSURLRequest requestWithURL:
-          [NSURL URLWithString:self.dataArray[i]]]
-                                           queue:self.bgQueue
-                               completionHandler: ^(NSURLResponse *response, NSData *data, NSError *connectionError) {
-                                   if(data){
-                                       self.imageData[i] = [UIImage imageWithData:data];
-                                   }
-                                   
-                                   count -= 1;
-                                   if(count <= 0){
-                                       [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                                           [self.collectionView reloadData];
-                                       }];
-                                   }
-                               }];
-    }
-}
 
 
 
@@ -166,9 +79,9 @@
     [self.locationManager startUpdatingLocation];
     
     if (self.error == NULL){
-        NSLog(@"FUCK C");
         ABAddressBookRef addressBook = ABAddressBookCreateWithOptions(NULL, self.error);
         [self listPeopleInAddressBook:addressBook];
+
     }
  
 }
@@ -190,7 +103,7 @@
 
 
 -(NSInteger) collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
-    NSLog(@"%u", self.dataArray.count);
+    NSLog(@"%lu", (unsigned long)self.dataArray.count);
  
     return self.dataArray.count;
 }
@@ -231,8 +144,101 @@
 
 
 
+//// LOCATION CODE /////
+
+- (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations
+{
+//    [NSThread sleepForTimeInterval:0.5f];
+    self.locationManager = [[CLLocationManager alloc] init];
+    self.locationManager.delegate = self;
+    self.locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+    self.locationManager.distanceFilter = kCLDistanceFilterNone;
+    [self.locationManager startUpdatingLocation];
+    //    [self.locationManager stopUpdatingLocation];
+    
+    CLLocation *location = [self.locationManager location];
+    CLLocationCoordinate2D coordinate = [location coordinate];
+    float longitude=coordinate.longitude;
+    float latitude=coordinate.latitude;
+    
+    
+    
+    /// MOVEMENT TOLERANCE
+    //    if (prevLat == nil){
+    //        prevLat = &latitude;
+    //    }
+    //    else if (prevLat == &latitude){
+    //        [self.locationManager stopUpdatingLocation];
+    //    }
+    //    if (prevLat !=
+    //    NSLog(@"We're in the request maker.");
+    
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    NSString *token = appDelegate.pushCode;
+    
+    //    NSLog(@"%f", latitude);
+    [self makeRequest:[NSString stringWithFormat:@"%f&lon=%f",latitude,longitude]];
+}
+
+- (void)loadURLsFromLocation:(NSString *)locationString {
+    if(!self.bgQueue){
+        self.bgQueue = [[NSOperationQueue alloc] init]; // Background threads it (backgroundqueue).
+    }
+    
+    [NSURLConnection sendAsynchronousRequest:
+     [NSURLRequest requestWithURL:
+      [NSURL URLWithString:locationString]]
+                                       queue:self.bgQueue
+                           completionHandler: ^(NSURLResponse *response, NSData *data, NSError *connectionError) {
+                               if(connectionError){
+                                   NSLog(@"%@", connectionError);
+                               }
+                               
+                               if(data != nil){
+                                   
+                                   NSDictionary *imagesDict = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+                                   NSArray *urls = [imagesDict valueForKey:@"images"];
+                                   self.dataArray = urls;
+                                   [self updateImageData];
+                               }
+                               
+                           }];
+}
+
+- (void)updateImageData{
+    __block NSInteger count = self.dataArray.count;
+    
+    for (NSInteger i = 0; i< self.dataArray.count; i++) {
+        if(!self.bgQueue){
+            self.bgQueue = [[NSOperationQueue alloc] init];
+        }
+        
+        [NSURLConnection sendAsynchronousRequest:
+         [NSURLRequest requestWithURL:
+          [NSURL URLWithString:self.dataArray[i]]]
+                                           queue:self.bgQueue
+                               completionHandler: ^(NSURLResponse *response, NSData *data, NSError *connectionError) {
+                                   if(data){
+                                       self.imageData[i] = [UIImage imageWithData:data];
+                                   }
+                                   
+                                   count -= 1;
+                                   if(count <= 0){
+                                       [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                                           [self.collectionView reloadData];
+                                       }];
+                                   }
+                               }];
+    }
+}
+
+
+
+
+// Address Book Methods
 -(void)addressBookAuth
 {
+    NSLog(@"We're in auth");
     ABAuthorizationStatus status = ABAddressBookGetAuthorizationStatus();
     
     if (status == kABAuthorizationStatusDenied || status == kABAuthorizationStatusRestricted) {
@@ -245,7 +251,7 @@
         return;
     }
     
-    self.error = NULL;
+     self.error = NULL;
     ABAddressBookRef addressBook = ABAddressBookCreateWithOptions(NULL, self.error);
     
     if (!addressBook) {
@@ -254,13 +260,12 @@
     }
     
     ABAddressBookRequestAccessWithCompletion(addressBook, ^(bool granted, CFErrorRef error) {
-        if (error) {
+        if (self.error) {
             NSLog(@"ABAddressBookRequestAccessWithCompletion error: %@", CFBridgingRelease(error));
         }
         
         if (granted) {
             // if they gave you permission, then just carry on
-            
             [self listPeopleInAddressBook:addressBook];
         } else {
             // however, if they didn't give you permission, handle it gracefully, for example...
@@ -274,9 +279,7 @@
         
         CFRelease(addressBook);
     });
-    
 }
-
 
 
 
@@ -300,12 +303,19 @@
             if ([mobileLabel isEqualToString:@"_$!<Mobile>!$_"]) {
                 mobileNumber = ABMultiValueCopyValueAtIndex(phoneNumbers,i);
                 NSLog(@"Name:%@ %@, and Mobile: %@", firstName, lastName, mobileNumber);
-
+                
             }
             
         }
     }
 }
+
+
+
+
+
+
+
 
 
 

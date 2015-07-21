@@ -7,9 +7,14 @@
 //
 
 #import "AppDelegate.h"
-
+#import "ViewController.h"
+#import <AddressBook/AddressBook.h>
+#import <AddressBookUI/AddressBookUI.h>
+@import CoreLocation;
+@import AddressBook;
 
 @interface AppDelegate ()
+@property ViewController *viewController;
 @end
 
 @implementation AppDelegate
@@ -18,17 +23,19 @@
 //NSString *MYGlobalVariable = @"Test"; // More Global Var Testing
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-//    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"HasLaunchedOnce"])
-//    {
-//        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"HasLaunchedOnce"];
-//        [[NSUserDefaults standardUserDefaults] synchronize];
-//        return YES;
-//    }
-//    else{
-//        NSLog(@"_GOBBLEGOO_");
-//        ABAddressBookRef addressBook = ABAddressBookCreateWithOptions(NULL, &error);
-//        return YES;
-//    }
+    self.viewController = (ViewController *)self.window.rootViewController;
+    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"HasLaunchedOnce"])
+    {
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"HasLaunchedOnce"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        [self.viewController addressBookAuth];
+        
+        return YES;
+    }
+    else{
+        NSLog(@"_GOBBLEGOO_");
+        return YES;
+    }
     return YES;
 } // Checks if a person has used the app befor eor not
 

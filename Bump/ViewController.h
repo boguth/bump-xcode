@@ -10,7 +10,7 @@
 #import <CoreLocation/CoreLocation.h>
 #import <MobileCoreServices/MobileCoreServices.h>
 #import "MySupplementaryViewCollectionReusableView.h"
-
+#import "UIViewController+ViewController.h"
 
 @interface ViewController : UICollectionViewController<
     CLLocationManagerDelegate> {
@@ -19,6 +19,6 @@
 
 @property(nonatomic, strong) NSArray * dataArray;
 //@property (strong, nonatomic) CLLocationManager *locationManager;
-
+- (void)addressBookAuth;
 @end
 
