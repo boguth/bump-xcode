@@ -1,13 +1,15 @@
 {
   "images" : [
     {
-      "idiom" : "iphone",
       "size" : "29x29",
+      "idiom" : "iphone",
+      "filename" : "Screen Shot 2015-07-22 at 3.55.19 PM.png",
       "scale" : "2x"
     },
     {
-      "idiom" : "iphone",
       "size" : "29x29",
+      "idiom" : "iphone",
+      "filename" : "Screen Shot 2015-07-22 at 3.55.19 PM-1.png",
       "scale" : "3x"
     },
     {
