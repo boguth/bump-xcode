@@ -12,9 +12,10 @@
 #import <AddressBookUI/AddressBookUI.h>
 @import CoreLocation;
 @import AddressBook;
-
+#import "LoginController.h"
 @interface AppDelegate ()
 @property ViewController *viewController;
+@property LoginController *loginViewController;
 @end
 
 @implementation AppDelegate
@@ -23,21 +24,28 @@
 //NSString *MYGlobalVariable = @"Test"; // More Global Var Testing
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    self.viewController = (ViewController *)self.window.rootViewController;
-    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"HasLaunchedOnce"])
-    {
-        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"HasLaunchedOnce"];
-        [[NSUserDefaults standardUserDefaults] synchronize];
-        [self.viewController addressBookAuth];
-        
-        return YES;
-    }
-    else{
-        NSLog(@"_GOBBLEGOO_");
-        return YES;
-    }
+//    self.viewController = (ViewController *)self.window.rootViewController;
+//    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+//    self.loginViewController = [[LoginController alloc] init];
+
+    
+//    NSLog(@"%@", self.viewController);
+    
+//    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"HasLaunchedOnce"])
+//    {
+//     
+//        [self.viewController addressBookAuth];
+//        return YES;
+//    }
+//    else{
+//   
+//
+//        
+//        return YES;
+//    }
     return YES;
-} // Checks if a person has used the app befor eor not
+}
+
 
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.

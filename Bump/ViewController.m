@@ -21,22 +21,20 @@
 @property (strong, nonatomic) NSOperationQueue *bgQueue;
 @property (strong, nonatomic) NSMutableArray *imageData;
 @property (assign, nonatomic) CFErrorRef *error;
-
+@property (assign, nonatomic) BOOL *hasBeenChecked;
 
 @end
 
 @implementation ViewController{
     float *prevLat;
     float *prevLong;
-//    ABRecordRef *ref;
-}
 
+}
 
 /// ASYNCHRONOUS REQUEST CODE ///
 
 -(void)makeRequest:(NSString*)string
 {
-    
     NSString *location = string;
     NSString *prefix = @"https://whispering-stream-9304.herokuapp.com/update?token=b13e2dca0322957b7934a6b1f4d500f8dd7b59724db65f6f92f3a1072a31bbf4&lat=";
     NSString *queryString = [prefix stringByAppendingString:location];
@@ -44,44 +42,59 @@
 }
 
 
-
-
-
+- (void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
+    if(![[NSUserDefaults standardUserDefaults] boolForKey:@"HasLaunchedOnce"]){
+        [self performSegueWithIdentifier:@"firstLogin" sender:self];
+    }
+    else
+    {
+    
+    //     This conditional block of code is for push notifications
+        if ([[UIApplication sharedApplication] respondsToSelector:@selector(registerUserNotificationSettings:)])
+        {
+        // iOS 8 Notifications
+        // use registerUserNotificationSettings
+            [[UIApplication sharedApplication] registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:(UIUserNotificationTypeSound |         UIUserNotificationTypeAlert | UIUserNotificationTypeBadge) categories:nil]];
+            [[UIApplication sharedApplication] registerForRemoteNotifications];
+        }
+        else
+        {
+            // iOS < 8 Notifications
+            // use registerForRemoteNotifications
+            [[UIApplication sharedApplication] registerForRemoteNotificationTypes: UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert];
+        }
+        
+        if (self.hasBeenChecked != YES){
+             [self addressBookAuth];
+        }
+        
+        if ([self.locationManager respondsToSelector:@selector(requestAlwaysAuthorization)]) {
+            [self.locationManager requestAlwaysAuthorization];
+        }
+    }
+    
+}
 - (void)viewDidLoad {
+
     [super viewDidLoad];
     self.dataArray = @[];
     self.imageData = [[NSMutableArray alloc] init];
     
-    // This conditional block of code is for push notifications
-    if ([[UIApplication sharedApplication] respondsToSelector:@selector(registerUserNotificationSettings:)])
-    {
-        // iOS 8 Notifications
-        // use registerUserNotificationSettings
-        [[UIApplication sharedApplication] registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:(UIUserNotificationTypeSound | UIUserNotificationTypeAlert | UIUserNotificationTypeBadge) categories:nil]];
-        [[UIApplication sharedApplication] registerForRemoteNotifications];
-    }
-    else
-    {
-        // iOS < 8 Notifications
-        // use registerForRemoteNotifications
-        [[UIApplication sharedApplication] registerForRemoteNotificationTypes: UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert];
-    }
-    
-    
-    
     self.locationManager = [[CLLocationManager alloc] init];
     self.locationManager.delegate = self;
-    // Check for iOS 8. Without this guard the code will crash with "unknown selector" on iOS 7.
-    // This is the notification block of code specifically for location.
-    if ([self.locationManager respondsToSelector:@selector(requestAlwaysAuthorization)]) {
-        [self.locationManager requestAlwaysAuthorization];
-    }
     [self.locationManager startUpdatingLocation];
-    
+
     if (self.error == NULL){
         ABAddressBookRef addressBook = ABAddressBookCreateWithOptions(NULL, self.error);
         [self listPeopleInAddressBook:addressBook];
+        // Check for iOS 8. Without this guard the code will crash with "unknown selector" on iOS 7.
+        // This is the notification block of code specifically for location.
+        
+        
 
+    }
+    else{
     }
  
 }
@@ -111,13 +124,15 @@
 -(UICollectionViewCell*) collectionView:(UICollectionView *)cv cellForItemAtIndexPath:(NSIndexPath *)indexPath{
     
     Cell *aCell = [cv dequeueReusableCellWithReuseIdentifier:@"myCell" forIndexPath:indexPath];
+    UIImageView *imageView = (UIImageView *)[cv viewWithTag:1];
+    imageView.image = (UIImage *)[self.imageData objectAtIndex:indexPath.row];
     
-    aCell.image.image = (UIImage *)[self.imageData objectAtIndex:indexPath.row];
-    
-    [aCell.layer setBorderWidth:1.5f];
-    [aCell.layer setBorderColor:[UIColor whiteColor].CGColor];
-    [aCell.layer setCornerRadius:37.5f]; // MAKES CIRCLES!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        return aCell;
+    [imageView.layer setMasksToBounds:YES];
+    [imageView.layer setBorderColor:[UIColor whiteColor].CGColor];
+    [imageView.layer setBorderWidth:1];
+    [imageView.layer setCornerRadius:45];
+
+    return aCell;
     
 }
 
@@ -135,7 +150,7 @@
                                                            forIndexPath:indexPath];
         
         header.headerLabel.text = @"bump";
-        [header.headerLabel setFont:[UIFont fontWithName:@"AmericanTypewriter-Condensed" size:38.0]];
+        [header.headerLabel setFont:[UIFont fontWithName:@"AmericanTypewriter-Condensed" size:34.0]];
     }
     return header;
 }
@@ -148,7 +163,7 @@
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations
 {
-//    [NSThread sleepForTimeInterval:0.5f];
+    [NSThread sleepForTimeInterval:0.5f];
     self.locationManager = [[CLLocationManager alloc] init];
     self.locationManager.delegate = self;
     self.locationManager.desiredAccuracy = kCLLocationAccuracyBest;
@@ -225,6 +240,7 @@
                                    count -= 1;
                                    if(count <= 0){
                                        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                            
                                            [self.collectionView reloadData];
                                        }];
                                    }
@@ -238,7 +254,8 @@
 // Address Book Methods
 -(void)addressBookAuth
 {
-    NSLog(@"We're in auth");
+    
+    self.hasBeenChecked = YES;
     ABAuthorizationStatus status = ABAddressBookGetAuthorizationStatus();
     
     if (status == kABAuthorizationStatusDenied || status == kABAuthorizationStatusRestricted) {

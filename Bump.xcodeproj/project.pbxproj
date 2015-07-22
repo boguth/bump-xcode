@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		093330CD1B5F064B00143BC8 /* LoginController.m in Sources */ = {isa = PBXBuildFile; fileRef = 093330CC1B5F064B00143BC8 /* LoginController.m */; };
 		09E881431B5B3C2D006B3381 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 09E881421B5B3C2D006B3381 /* main.m */; };
 		09E881461B5B3C2D006B3381 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 09E881451B5B3C2D006B3381 /* AppDelegate.m */; };
 		09E881491B5B3C2D006B3381 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 09E881481B5B3C2D006B3381 /* ViewController.m */; };
@@ -29,6 +30,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		093330CB1B5F064B00143BC8 /* LoginController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginController.h; sourceTree = "<group>"; };
+		093330CC1B5F064B00143BC8 /* LoginController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginController.m; sourceTree = "<group>"; };
 		09E8813D1B5B3C2D006B3381 /* Bump.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Bump.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		09E881411B5B3C2D006B3381 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		09E881421B5B3C2D006B3381 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -99,6 +102,8 @@
 				09E881671B5B438F006B3381 /* Cell.m */,
 				09E8816F1B5C24AF006B3381 /* MySupplementaryViewCollectionReusableView.h */,
 				09E881701B5C24AF006B3381 /* MySupplementaryViewCollectionReusableView.m */,
+				093330CB1B5F064B00143BC8 /* LoginController.h */,
+				093330CC1B5F064B00143BC8 /* LoginController.m */,
 			);
 			path = Bump;
 			sourceTree = "<group>";
@@ -239,6 +244,7 @@
 				09E881461B5B3C2D006B3381 /* AppDelegate.m in Sources */,
 				09E881431B5B3C2D006B3381 /* main.m in Sources */,
 				09E881711B5C24AF006B3381 /* MySupplementaryViewCollectionReusableView.m in Sources */,
+				093330CD1B5F064B00143BC8 /* LoginController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

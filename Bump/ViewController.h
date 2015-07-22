@@ -18,7 +18,7 @@
 }
 
 @property(nonatomic, strong) NSArray * dataArray;
-//@property (strong, nonatomic) CLLocationManager *locationManager;
 - (void)addressBookAuth;
+
 @end
 

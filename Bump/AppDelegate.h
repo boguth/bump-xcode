@@ -15,6 +15,7 @@
     NSString *pushCode;
 }
 
+
 @property (strong, nonatomic) UIWindow *window;
 @property (nonatomic, retain) NSString *pushCode;
 
