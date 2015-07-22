@@ -200,7 +200,7 @@
 
 
 
-    NSLog(@"%lu", (unsigned long)self.dataArray.count);
+//    NSLog(@"%lu", (unsigned long)self.dataArray.count);
 
  
     return self.dataArray.count;
@@ -293,30 +293,109 @@
 -(void)listPeopleInAddressBook:(ABAddressBookRef *) addressBook {
     
     
-    {
         NSArray *allPeople = CFBridgingRelease(ABAddressBookCopyArrayOfAllPeople(addressBook));
         NSInteger numberOfPeople = [allPeople count];
-        NSLog(@"AddressBook");
-        NSLog(@"%ld", (long)numberOfPeople);
+        
+//        NSLog(@"This is the number of people in my contacts");
+//        NSLog(@"%ld", (long)numberOfPeople);
+        
+        NSMutableDictionary *contactDictionary = [[NSMutableDictionary alloc] init];
         
         for (NSInteger i = 0; i < numberOfPeople; i++) {
+            
             ABRecordRef person = (__bridge ABRecordRef)allPeople[i];
             NSString *firstName = CFBridgingRelease(ABRecordCopyValue(person, kABPersonFirstNameProperty));
+//            NSLog(@"%@", firstName);
             NSString *lastName  = CFBridgingRelease(ABRecordCopyValue(person, kABPersonLastNameProperty));
+//            NSLog(@"%@", lastName);
             NSData  *imgData = (NSData *)CFBridgingRelease(ABPersonCopyImageData(person));
             UIImage  *img = [UIImage imageWithData:imgData];
             
             ABMultiValueRef phoneNumbers = ABRecordCopyValue(person, kABPersonPhoneProperty);
-            CFStringRef mobileNumber;
-            NSString *mobileLabel;
-            mobileLabel = CFBridgingRelease(ABMultiValueCopyLabelAtIndex(phoneNumbers, i));
-            if ([mobileLabel isEqualToString:@"_$!<Mobile>!$_"]) {
-                mobileNumber = ABMultiValueCopyValueAtIndex(phoneNumbers,i);
-                NSLog(@"Name:%@ %@, and Mobile: %@, and image: %@", firstName, lastName, mobileNumber, img);
+            NSString *mobileNumber;
+           // NSString *mobileLabel;
+            NSInteger numbertotal = ABMultiValueGetCount(phoneNumbers);
+            for (NSInteger x=0; x < numbertotal; x++){
+                //mobileLabel = CFBridgingRelease(ABMultiValueCopyLabelAtIndex(phoneNumbers, i));
+//              NSLog(@"%@", mobileLabel);
+//              if ([mobileLabel isEqualToString:@"_$!<mobile>!$_"]) {
+                    mobileNumber = (__bridge_transfer NSString*)ABMultiValueCopyValueAtIndex(phoneNumbers,x);
+//                    NSLog(@"Name:%@ %@, and Mobile: %@, and image: %@", firstName, lastName, mobileNumber, img);
+//            }
+            
+            
+//            Setting Up Post request for contact information
+                
+                NSMutableDictionary *thisPerson = [[NSMutableDictionary alloc] init];
+                if (firstName){
+                    [thisPerson setObject:firstName forKey:@"first_name"];
+                }
+                if (lastName){
+                    [thisPerson setObject:lastName forKey:@"last_name" ];
+                }
+                if (img){
+                    [thisPerson setObject:img forKey:@"image"];
+                }
+                if (mobileNumber){
+                    [thisPerson setObject:mobileNumber forKey:@"number"];
+                }
+                [contactDictionary setObject:thisPerson forKey:@"person"];
+            }
+        }
+        
+           // NSMutableDictionary *contactsToServer = [[NSMutableDictionary alloc] init];
+//            NSDictionary *jsonDictionary = [[NSMutableDictionary alloc] init];
+            //[contactsToServer setObject:contactArray forKey:@"contacts"];
+            
+//            NSString *jsonString = [contactsToServer JSONRepresentation];
+            
+            NSData *contactsToServer = [NSJSONSerialization dataWithJSONObject:contactDictionary options:0 error:nil];
+            
+            
+            
+            
+           // NSLog(@"%@", thisPerson);
+            
+            if(!self.bgQueue){
+                self.bgQueue = [[NSOperationQueue alloc] init]; // Background threads it (backgroundqueue).
+            }
+             
+            NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+            [request setURL:[NSURL URLWithString:@"https://whispering-stream-9304.herokuapp.com/contacts"]];
+            [request setHTTPMethod:@"POST"];
+            [request setValue: [NSString stringWithFormat:@"%lu", (unsigned long)[contactsToServer length]] forHTTPHeaderField:@"Content-Length"];
+            [request setHTTPBody:contactsToServer];
+            
+            
+    NSURLConnection *conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+    
+            if(conn) {
+                NSLog(@"Connection Made");
+            }
+            else {
+                NSLog(@"Connection Failed");
             }
             
-        }
-    }
+//            [NSURLConnection sendAsynchronousRequest:request
+//                                               queue:self.bgQueue
+//                                   completionHandler: ^{ NSLog(@"Finished the request");}];
+//             ^(NSURLResponse *response, NSData *data, NSError *connectionError) {
+//                                       if(connectionError){
+//                                           NSLog(@"%@", connectionError);
+//                                       }
+//                                       
+//                                       if(data != nil){
+//                                           
+//                                           NSDictionary *imagesDict = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+//                                           NSArray *urls = [imagesDict valueForKey:@"images"];
+//                                           //                                   NSLog(@"%@", urls);
+//                                           self.dataArray = urls;
+//                                           [self updateImageData];
+//                                       }
+            
+            
+//                                   }];
+    
 }
 
 
