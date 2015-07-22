@@ -130,7 +130,7 @@
     [imageView.layer setMasksToBounds:YES];
     [imageView.layer setBorderColor:[UIColor whiteColor].CGColor];
     [imageView.layer setBorderWidth:1];
-    [imageView.layer setCornerRadius:45];
+    [imageView.layer setCornerRadius:40];
 
     return aCell;
     

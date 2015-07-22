@@ -17,6 +17,7 @@
 		09E8815D1B5B3C2D006B3381 /* BumpTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 09E8815C1B5B3C2D006B3381 /* BumpTests.m */; };
 		09E881681B5B438F006B3381 /* Cell.m in Sources */ = {isa = PBXBuildFile; fileRef = 09E881671B5B438F006B3381 /* Cell.m */; };
 		09E881711B5C24AF006B3381 /* MySupplementaryViewCollectionReusableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 09E881701B5C24AF006B3381 /* MySupplementaryViewCollectionReusableView.m */; };
+		09FD1E3E1B603A2A00797DEF /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 09FD1E3D1B603A2A00797DEF /* Media.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +50,7 @@
 		09E881671B5B438F006B3381 /* Cell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Cell.m; sourceTree = "<group>"; };
 		09E8816F1B5C24AF006B3381 /* MySupplementaryViewCollectionReusableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MySupplementaryViewCollectionReusableView.h; sourceTree = "<group>"; };
 		09E881701B5C24AF006B3381 /* MySupplementaryViewCollectionReusableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MySupplementaryViewCollectionReusableView.m; sourceTree = "<group>"; };
+		09FD1E3D1B603A2A00797DEF /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -113,6 +115,7 @@
 			children = (
 				09E881411B5B3C2D006B3381 /* Info.plist */,
 				09E881421B5B3C2D006B3381 /* main.m */,
+				09FD1E3D1B603A2A00797DEF /* Media.xcassets */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -221,6 +224,7 @@
 			files = (
 				09E8814C1B5B3C2D006B3381 /* Main.storyboard in Resources */,
 				09E881511B5B3C2D006B3381 /* LaunchScreen.xib in Resources */,
+				09FD1E3E1B603A2A00797DEF /* Media.xcassets in Resources */,
 				09E8814E1B5B3C2D006B3381 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

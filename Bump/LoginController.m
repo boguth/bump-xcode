@@ -14,8 +14,9 @@
 
 -(void)viewDidLoad{
     _loginHeaderLabel.text = @"bump";
+    [self.txtUsername setPlaceholder:@"Phone Number"];
+    [self.txtPassword setPlaceholder:@"Password"];
     [_loginHeaderLabel setFont:[UIFont fontWithName:@"AmericanTypewriter-Condensed" size:34.0]];
-    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"HasLaunchedOnce"];
 
 }
 
