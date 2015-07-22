@@ -58,7 +58,7 @@
                 
                 NSError *error = [[NSError alloc] init];
                 NSHTTPURLResponse *response = nil;
-                NSData *urlData=[NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
+                NSData *urlData=[NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error]; // Here is where the request is sent.
 
                 NSLog(@"Response code: %ld", (long)[response statusCode]);
                 
