@@ -131,7 +131,14 @@
     [imageView.layer setBorderColor:[UIColor whiteColor].CGColor];
     [imageView.layer setBorderWidth:1];
     [imageView.layer setCornerRadius:40];
+    
+    
+    UILabel *title = [[UILabel alloc]initWithFrame:CGRectMake(23, 70, aCell.bounds.size.width, 40)];
+    title.tag = 200;
+    [aCell.contentView addSubview:title];
+    [title setFont:[UIFont fontWithName:@"AmericanTypewriter-Condensed" size:14.0]];
 
+    [title setText:@"Test"];
     return aCell;
     
 }
